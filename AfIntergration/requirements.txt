@@ -1,0 +1,16 @@
+amiconn==0.536
+certifi==2019.6.16
+chardet==3.0.4
+crypto==1.4.1
+idna==2.8
+importlib-metadata==0.18
+Naked==0.1.31
+path.py==12.0.1
+pycryptodome==3.8.2
+pyodbc==4.0.26
+PyYAML==5.1.1
+requests==2.22.0
+shellescape==3.4.1
+SQLAlchemy==1.3.5
+urllib3==1.25.3
+zipp==0.5.1

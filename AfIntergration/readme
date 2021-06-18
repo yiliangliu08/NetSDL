@@ -1,0 +1,8 @@
+AfIntergration<br>
+get_orders（完成）:<br>
+运行：按顺序输入店铺ID，起始时间和日程表ID<br>
+通过Afound的接口获取xml格式的订单数据，整理之后发送到数据库。如果订单的状态为Waiting Acceptance，将通过接口自动接受。订单都进入数据库之后，将通过order_sync发送。<br>
+所有参数只有limit经过测试有效，其他参数还有待验证<br>
+GET OR11 List orders：https://hennesmauritz-preprod.mirakl.net/help/api-doc/seller/mmp.html#OR11<br>
+PUT OR21 Accept or refuse order lines in the "WAITING_ACCEPTANCE" status: https://hennesmauritz-preprod.mirakl.net/help/api-doc/seller/mmp.html#OR21
+
