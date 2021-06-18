@@ -1,0 +1,44 @@
+AzIntergration<br>
+get_orders（完成）：<br>
+运行：按顺序输入店铺ID，起始时间和日程表ID<br>
+在向亚马逊发出请求前，程序会保存当前时间减去三分钟（直接使用当前时间会导致亚马逊报错），并使用这个时间作为最后变更时间的参数，同时这个时间会作为下一次查询订单的起始时间<br>
+获取订单之后，会将所有需要的参数编排成为字典然后同步到数据库<br>
+若返回的数据包含NextToken，则会循环获取数据知道没有NextToken<br>
+当数据获取完成之后，程序会通过order_sync发送数据，默认设置为五十个订单数据一组<br>
+ListOrders: http://docs.developer.amazonservices.com/en_UK/orders-2013-09-01/Orders_ListOrders.html<br>
+GetReport: http://docs.developer.amazonservices.com/en_UK/reports/Reports_GetReportRequestList.html<br>
+ListOrdersByNextToken: http://docs.developer.amazonservices.com/en_UK/orders-2013-09-01/Orders_ListOrdersByNextToken.html<br>
+
+get_returns（完成）：<br>
+运行：按顺序输入店铺ID，起始时间和日程表ID<br>
+在向亚马逊发出请求前，程序会保存当前时间减去三分钟（直接使用当前时间会导致亚马逊报错），并使用这个时间作为最后变更时间的参数，同时这个时间会作为下一次查询订单的起始时间。获取报告的时间差不得超过两个月<br>
+get_returns通过获取return_report的方式来获取数据<br>
+首先通过请求使亚马逊生成报告，然后检查报告状态，当报告返回状态为'Done‘的时候，再次发出请求获取报告数据，如果返回状态为其他状态，则没有数据，程序退出<br>
+获取报告之后，数据会被整理同步到数据库，最后通过return_sync发送<br>
+RequestReport: http://docs.developer.amazonservices.com/en_UK/reports/Reports_RequestReport.html<br>
+GetReportRequestList: http://docs.developer.amazonservices.com/en_UK/reports/Reports_GetReportRequestList.html<br>
+GetReport: http://docs.developer.amazonservices.com/en_UK/reports/Reports_GetReport.html<br>
+
+get_items（完成）：<br>
+运行：按顺序输入店铺ID，起始时间和日程表ID。首先通过Listing Report来获取商家的所有商品。这些商品数据被整理之后会被同步到数据库。然后再通过起始时间来查找起始时间之后商品发生的变化。将这些返回的库存数量根据SellerSku同步到数据科技。最后通过product_sync发送<br>
+RequestReport: http://docs.developer.amazonservices.com/en_UK/reports/Reports_RequestReport.html<br>
+GetReportRequestList:http://docs.developer.amazonservices.com/en_UK/reports/Reports_GetReportRequestList.html<br>
+GetReport: http://docs.developer.amazonservices.com/en_UK/reports/Reports_GetReport.html<br>
+ListInventorySupply: http://docs.developer.amazonservices.com/en_UK/fba_inventory/FBAInventory_ListInventorySupply.html<br>
+ListInventorySupplyByNextToken: http://docs.developer.amazonservices.com/en_UK/fba_inventory/FBAInventory_ListInventorySupplyByNextToken.html<br>
+
+fulfillment_outbound（开发完成，没有测试）:<br>
+直接运行，程序从MCF_queue数据库获取发货数据，整理之后通过出库API进行发货<br>
+使用CreateFulfillmentOutbound创建出库，然后用GetFulfillmentOrder获取快递单号<br>
+CreateFulfillmentOutbound: http://docs.developer.amazonservices.com/en_UK/fba_outbound/FBAOutbound_GetFulfillmentPreview.html<br>
+GetFulfillmentOrder: http://docs.developer.amazonservices.com/en_UK/fba_outbound/FBAOutbound_CreateFulfillmentOrder.html<br>
+
+
+fulfillment_inbound（开发未完成）: <br>
+首先调用CreateShipmentPlan来获取ShipmentId和FulfillmentCenterId。（创建Plan时可能会返回多个ID，需要分开处理）<br>
+然后使用CreateShipment接口为每一个返回的ShipmentId创建入库<br>
+其次将运输信息通过PutTransportContent接口传给亚马逊（运输类型四选一，如使用亚马逊的合作运输仍然需要以下步骤）<br>
+之后将货物和箱子信息通过SubmitFeed发送<br>
+最后通过GetUniqueLabels获取标签<br>
+入库流程： http://docs.developer.amazonservices.com/en_UK/fba_guide/FBAGuide_ShipInventoryToAFN.html
+

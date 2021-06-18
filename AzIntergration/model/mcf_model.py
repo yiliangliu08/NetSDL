@@ -1,0 +1,37 @@
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer
+MCFModel = declarative_base()
+
+
+class MCF(MCFModel):
+    __tablename__ = 'Mcf_queue'
+    Queue_Id = Column('Queue_Id', Integer, primary_key=True)
+    Id = Column('Id', default='')
+    Scan_job_id = Column('Scan_job_id', default='')
+    Scan_job_no = Column('Scan_job_no', default='')
+    Sj_create_time = Column('Sj_create_time', default='')
+    Pj_id = Column('Pj_id', default='')
+    Order_head_id = Column('Order_head_id', default='')
+    Orig_order_no = Column('Orig_order_no', default='')
+    Order_line_id = Column('Order_line_id', default='')
+    Sku_id = Column('Sku_id', default='')
+    Sku_cd = Column('Sku_cd', default='')
+    Req_qty = Column('Req_qty', default='')
+    Ln_shipping_id = Column('Ln_shipping_id', default='')
+    Ship_to_country = Column('Ship_to_country', default='')
+    Ship_to_province = Column('Ship_to_province', default='')
+    Ship_to_city = Column('Ship_to_city', default='')
+    Ship_to_district = Column('Ship_to_district', default='')
+    Ship_to_add_1 = Column('Ship_to_add_1', default='')
+    Ship_to_add_2 = Column('Ship_to_add_2', default='')
+    Ship_to_add_3 = Column('Ship_to_add_3', default='')
+    Ship_to_zip = Column('Ship_to_zip', default='')
+    Ship_to_name = Column('Ship_to_name', default='')
+    Ship_to_name_1 = Column('Ship_to_name_1', default='')
+    Ship_to_name_2 = Column('Ship_to_name_2', default='')
+    Ship_to_mobile = Column('Ship_to_mobile', default='')
+    If_status = Column('If_status', default=1)
+    If_msg = Column('If_msg', default='')
+    Create_time = Column('Create_time', default='')
+    Operate_time = Column('Operate_time', default='')
+    Remark = Column('Remark', default='')
